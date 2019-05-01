@@ -11,5 +11,6 @@
             "Kamicloud\\LaravelUnofficialRelations\\": "src/"
         }
     },
+    "license": "MIT",
     "require": {}
 }
