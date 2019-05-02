@@ -15,12 +15,13 @@ class HasManyBySet extends Relation
 
     protected $parentKey;
 
-    protected $delimiter = ',';
+    protected $delimiter;
 
-    public function __construct(Builder $query, Model $parent, $foreignKey, $relatedKey)
+    public function __construct(Builder $query, Model $parent, $foreignKey, $relatedKey, $delimiter = ',')
     {
         $this->foreignKey = $foreignKey;
         $this->relatedKey = $relatedKey;
+        $this->delimiter = $delimiter;
 
         parent::__construct($query, $parent);
     }
@@ -48,8 +49,11 @@ class HasManyBySet extends Relation
     public function addEagerConstraints(array $models)
     {
         $whereIn = $this->whereInMethod($this->parent, $this->foreignKey);
+        $keys = $this->getKeys($models, $this->foreignKey);
 
-        $this->query->{$whereIn}($this->relatedKey, $this->explodeKey(join(',', $this->getKeys($models, $this->foreignKey))));
+        $this->query->{$whereIn}($this->relatedKey, array_flatten(array_map(function ($keys) {
+            return $this->explodeKey($keys);
+        }, $keys)));
     }
 
     /**
@@ -81,7 +85,7 @@ class HasManyBySet extends Relation
         $dictionary = $this->buildDictionary($results);
 
         foreach ($models as $model) {
-            $keys = array_flip(array_filter(explode(',', $model->{$this->foreignKey})));
+            $keys = array_flip($this->explodeKey($model->{$this->foreignKey}));
 
             $model->setRelation(
                 $relation, $this->related->newCollection(array_values(array_intersect_key($dictionary, $keys)))
@@ -124,6 +128,12 @@ class HasManyBySet extends Relation
 
     protected function explodeKey($key)
     {
-        return array_values(array_filter(explode($this->delimiter, $key)));
+        if (is_string($this->delimiter)) {
+            return array_values(array_filter(explode($this->delimiter, $key)));
+        } elseif (is_callable($this->delimiter)) {
+            return array_values(array_filter(array_map($this->delimiter, $key)));
+        } else {
+            return $key;
+        }
     }
 }

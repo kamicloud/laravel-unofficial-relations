@@ -10,12 +10,13 @@ trait HasManyBySetRelationship
 {
     /**
      * 关联表，主表逗号外键，关联表键
+     *
      * @param $related
      * @param null $foreignKey
      * @param null $relatedKey
      * @return HasManyBySet
      */
-    public function hasManyBySet($related, $foreignKey = null, $relatedKey = null)
+    public function hasManyBySet($related, $foreignKey = null, $relatedKey = null, $delimiter = ',')
     {
         // First, we'll need to determine the foreign key and "other key" for the
         // relationship. Once we have determined the keys we'll make the query
@@ -25,11 +26,11 @@ trait HasManyBySetRelationship
         $relatedKey = $relatedKey ?: $instance->getKeyName();
 
 
-        return $this->newHasManyBySet($instance->newQuery(), $this, $foreignKey, $relatedKey);
+        return $this->newHasManyBySet($instance->newQuery(), $this, $foreignKey, $relatedKey, $delimiter);
     }
 
-    protected function newHasManyBySet(Builder $query, Model $parent, $foreignKey, $relatedKey)
+    protected function newHasManyBySet(Builder $query, Model $parent, $foreignKey, $relatedKey, $delimiter)
     {
-        return new HasManyBySet($query, $parent, $foreignKey, $relatedKey);
+        return new HasManyBySet($query, $parent, $foreignKey, $relatedKey, $delimiter);
     }
 }

@@ -12,5 +12,8 @@
         }
     },
     "license": "MIT",
-    "require": {}
+    "require": {
+        "PHP": "^7.2",
+        "laravel/framework": "5.7.*"
+    }
 }
