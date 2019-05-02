@@ -108,7 +108,7 @@ class HasManyBySet extends Relation
         // parents without having a possibly slow inner loops for every models.
         $dictionary = [];
         foreach ($results as $result) {
-            $dictionary[] = $result;
+            $dictionary[$result->{$this->relatedKey}] = $result;
         }
 
         return $dictionary;
@@ -128,10 +128,11 @@ class HasManyBySet extends Relation
 
     protected function explodeKey($key)
     {
-        if (is_string($this->delimiter)) {
+        if (is_string($this->delimiter) && is_string($key)) {
             return array_values(array_filter(explode($this->delimiter, $key)));
         } elseif (is_callable($this->delimiter)) {
-            return array_values(array_filter(array_map($this->delimiter, $key)));
+            $func = $this->delimiter;
+            return array_values(array_filter($func($key)));
         } else {
             return $key;
         }
