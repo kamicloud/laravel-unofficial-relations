@@ -10,13 +10,13 @@ use Illuminate\Support\Str;
 trait HasMorphToByMapRelation
 {
     /**
-     * Define a polymorphic, inverse one-to-one or many relationship.
+     * Can load morphTo with customize map
      *
      * @param  string  $name
-     * @param  string  $type
-     * @param  string  $id
-     * @param  string  $ownerKey
-     * @param  array|null $map
+     * @param  string  $type Same as MorphTo
+     * @param  string  $id Same as MorphTo
+     * @param  string  $ownerKey Same as MorphTo
+     * @param  array|null $map [Morph type key name in DB => Model namespace]
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function morphToByMap($name = null, $type = null, $id = null, $ownerKey = null, $map = null)

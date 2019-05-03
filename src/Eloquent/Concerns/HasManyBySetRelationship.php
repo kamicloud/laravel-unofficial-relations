@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Builder;
 trait HasManyBySetRelationship
 {
     /**
-     * 关联表，主表逗号外键，关联表键
+     * Can load relation by id array or string
      *
      * @param $related
-     * @param null $foreignKey
-     * @param null $relatedKey
+     * @param string|null $foreignKey Format id1, id2 | array<id>
+     * @param string|null $relatedKey
+     * @param string|callable $delimiter Default ',', allows customize function or null(for array foreignKey)
      * @return HasManyBySet
      */
     public function hasManyBySet($related, $foreignKey = null, $relatedKey = null, $delimiter = ',')

@@ -11,14 +11,14 @@ use Illuminate\Support\Str;
 trait HasManyBySetAndMorphToByMapRelation
 {
     /**
-     * Define a polymorphic, inverse one-to-one or many relationship.
+     * Can load morphTo with customize map and id can be a set
      *
-     * @param  string $name
-     * @param  string $type
-     * @param  string $id
-     * @param  string $ownerKey
-     * @param  array|null $map
-     * @param  string|callable $delimiter
+     * @param  string  $name
+     * @param  string  $type Same as MorphTo
+     * @param  string  $id Same as MorphTo
+     * @param  string  $ownerKey Same as MorphTo
+     * @param  array|null $map Same as HasMorphToByMapRelation
+     * @param  string|callable $delimiter Same as HasManyBySetRelationship
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function hasManyBySetAndMorphToByMap($name = null, $type = null, $id = null, $ownerKey = null, $map = null, $delimiter = ',')
